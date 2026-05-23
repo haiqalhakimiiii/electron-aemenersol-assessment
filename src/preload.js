@@ -5,7 +5,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 // Expose safe APIs to renderer process
 contextBridge.exposeInMainWorld('electronAPI', {
-  login: (username, password) => ipcRenderer.invoke('login', username, password),
+  login: (credentials) => ipcRenderer.invoke('login', credentials),
   fetchAPI: () => ipcRenderer.invoke('fetch-api'),
   logout: () => ipcRenderer.invoke('logout'),
 });

@@ -29,31 +29,54 @@
 import './index.css';
 
 const loginForm = document.getElementById('login-form');
+const errorMessageElement = document.querySelector('.error-message');
+const loadingSpinner = document.querySelector('.loading-spinner');
 
 // ===== LOGIN PAGE LOGIC =====
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById('username').value;
+    const username = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
+    // Show loading state
+    const submitButton = loginForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Signing in...';
+
     try {
+      console.log('Attempting login with username:', username);
+      
       // Call main process to handle login
-      const result = await window.electronAPI.login(
+      const result = await window.electronAPI.login({
         username,
         password,
-      );
+      });
+
+      console.log('Login result:', result);
 
       if (result.success) {
-        // Navigate to dashboard
         console.log('Login successful, navigating to dashboard...');
-        window.location.href = 'src/dashboard.html';
+        window.location.href = 'dashboard.html';
       } else {
-        console.error(result.error || 'Login failed');
+        console.error('Login failed:', result.error);
+        showError(errorMessageElement, result.error || 'Login failed');
+        submitButton.disabled = false;
+        submitButton.textContent = 'SIGN IN';
       }
     } catch (error) {
-      console.error(error.message);
+      console.error('Login error:', error);
+      showError(errorMessageElement, error.message);
+      submitButton.disabled = false;
+      submitButton.textContent = 'SIGN IN';
     }
   });
+}
+
+function showError(element, message) {
+  if (element) {
+    element.textContent = message;
+    element.style.display = 'block';
+  }
 }

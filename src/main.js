@@ -17,6 +17,8 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
     },
   });
 
@@ -56,8 +58,12 @@ app.on('window-all-closed', () => {
 // code. You can also put them in separate files and import them here.
 
 // Handle login request
-ipcMain.handle('login', async (event, username, password) => {
+ipcMain.handle('login', async (event, credentials) => {
   try {
+    const { username, password } = credentials;
+    
+    console.log('Login attempt with username:', username);
+    
     const response = await fetch('http://test-demo.aemenersol.com/api/account/login', {
       method: 'POST',
       headers: {
@@ -71,13 +77,20 @@ ipcMain.handle('login', async (event, username, password) => {
     }
 
     const data = await response.json();
-    accessToken = data.accessToken; // Store token securely in main process
+    
+    if (data.accessToken) {
+      accessToken = data.accessToken; // Store token securely in main process
+      console.log('Token stored successfully');
+    } else {
+      throw new Error('No access token in response');
+    }
 
     return {
       success: true,
       message: 'Login successful',
     };
   } catch (error) {
+    console.error('Login error:', error);
     return {
       success: false,
       error: error.message,
@@ -88,6 +101,8 @@ ipcMain.handle('login', async (event, username, password) => {
 // Handle API calls with token
 ipcMain.handle('fetch-api', async (event) => {
   try {
+    console.log('Fetching API with token:', accessToken ? 'Token present' : 'No token');
+    
     if (!accessToken) {
       throw new Error('No access token available. Please login first.');
     }
@@ -115,6 +130,7 @@ ipcMain.handle('fetch-api', async (event) => {
       data,
     };
   } catch (error) {
+    console.error('API error:', error);
     return {
       success: false,
       error: error.message,
@@ -125,5 +141,6 @@ ipcMain.handle('fetch-api', async (event) => {
 // Handle logout
 ipcMain.handle('logout', async (event) => {
   accessToken = null;
+  console.log('User logged out');
   return { success: true };
 });

@@ -35,7 +35,10 @@ async function loadDashboardData() {
     chartsSection.style.display = 'none';
     tableSection.style.display = 'none';
 
+    console.log('Fetching dashboard data...');
     const result = await window.electronAPI.fetchAPI();
+
+    console.log('Dashboard result:', result);
 
     if (result.success && result.data) {
       const dashboardData = result.data;
