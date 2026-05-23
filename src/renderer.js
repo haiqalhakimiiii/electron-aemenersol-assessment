@@ -48,7 +48,7 @@ if (loginForm) {
       if (result.success) {
         // Navigate to dashboard
         console.log('Login successful, navigating to dashboard...');
-        // window.location.href = 'dashboard.html';
+        window.location.href = 'src/dashboard.html';
       } else {
         console.error(result.error || 'Login failed');
       }
