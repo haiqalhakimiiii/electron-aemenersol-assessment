@@ -1,13 +1,25 @@
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <title>Hello World!</title>
 
-  </head>
-  <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
+</head>
+
+<body>
+    <div class="login-form">
+        <div class="login-form-header">
+            <div class="login-form-title">
+                Sign In to your dashboard
+            </div>
+        </div>
+        <div class="login-form-body">
+            <input type="text" id="email" name="email" placeholder="Email" />
+            <input type="password" id="password" name="password" placeholder="Password" />
+            <button type="submit" id="login-button" class="login-button">SIGN IN</button>
+        </div>
+    </div>
     <script type="module" src="/src/renderer.js"></script>
-  </body>
+</body>
 </html>
