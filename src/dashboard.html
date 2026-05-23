@@ -1,1 +1,85 @@
-dashboard is working
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="topbar-content">
+                <h1 class="topbar-title">Dashboard</h1>
+                <button id="logoutBtn" class="logout-button">Logout</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <div class="content-header">
+                <h2 class="content-title">Overview</h2>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner">
+                <div class="spinner-content">
+                    <div class="spinner-circle"></div>
+                    <p class="spinner-text">Loading dashboard data...</p>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div id="chartsSection" class="charts-section" style="display: none;">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Donut Chart</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="donutChartCanvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Bar Chart</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="barChartCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Section -->
+            <div id="tableSection" class="table-section" style="display: none;">
+                <div class="table-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Users List</h3>
+                    </div>
+                    <div class="card-body table-body">
+                        <table class="users-table">
+                            <thead>
+                                <tr class="table-header-row">
+                                    <th class="table-header-cell">#</th>
+                                    <th class="table-header-cell">First Name</th>
+                                    <th class="table-header-cell">Last Name</th>
+                                    <th class="table-header-cell">User Name</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./dashboard.js"></script>
+</body>
+</html>
