@@ -1,5 +1,9 @@
 import './index.css';
 
+function getLoginUrl() {
+  return new URL('../index.html', window.location.href).toString();
+}
+
 let donutChart = null;
 let barChart = null;
 
@@ -19,7 +23,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 logoutBtn.addEventListener('click', async () => {
   try {
     await window.electronAPI.logout();
-    window.location.href = 'index.html';
+    window.location.assign(getLoginUrl());
   } catch (error) {
     console.error('Logout error:', error);
   }

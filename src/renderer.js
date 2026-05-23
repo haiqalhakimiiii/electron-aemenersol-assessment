@@ -28,6 +28,10 @@
 
 import './index.css';
 
+function getDashboardUrl() {
+  return new URL('./src/dashboard.html', window.location.href).toString();
+}
+
 const loginForm = document.getElementById('login-form');
 const errorMessageElement = document.querySelector('.error-message');
 const loadingSpinner = document.querySelector('.loading-spinner');
@@ -58,7 +62,7 @@ if (loginForm) {
 
       if (result.success) {
         console.log('Login successful, navigating to dashboard...');
-        window.location.href = 'src/dashboard.html';
+        window.location.assign(getDashboardUrl());
       } else {
         console.error('Login failed:', result.error);
         showError(errorMessageElement, result.error || 'Login failed');
