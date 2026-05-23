@@ -81,8 +81,8 @@ ipcMain.handle('login', async (event, credentials) => {
     
     console.log('Response type:', typeof token, 'Content:', token ? token.substring(0, 50) : 'empty');
     
-    if (token && token.trim()) {
-      accessToken = token.trim(); // Store token securely in main process
+    if (token) {
+      accessToken = token; // Store token securely in main process
       console.log('Token stored successfully, length:', accessToken.length);
     } else {
       throw new Error('Empty token received from API');

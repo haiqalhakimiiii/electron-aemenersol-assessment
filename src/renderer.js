@@ -58,7 +58,7 @@ if (loginForm) {
 
       if (result.success) {
         console.log('Login successful, navigating to dashboard...');
-        window.location.href = 'dashboard.html';
+        window.location.href = 'src/dashboard.html';
       } else {
         console.error('Login failed:', result.error);
         showError(errorMessageElement, result.error || 'Login failed');
