@@ -105,7 +105,7 @@ ipcMain.handle('login', async (event, credentials) => {
 ipcMain.handle('fetch-api', async (event) => {
   try {
     console.log('Fetching API with token:', accessToken ? `Token present (length: ${accessToken.length})` : 'No token');
-    
+
     if (!accessToken) {
       throw new Error('No access token available. Please login first.');
     }
@@ -119,11 +119,6 @@ ipcMain.handle('fetch-api', async (event) => {
     });
 
     if (!response.ok) {
-      if (response.status === 401) {
-        // Token expired
-        accessToken = null;
-        throw new Error('Session expired. Please login again.');
-      }
       throw new Error(`API error: ${response.statusText}`);
     }
 
