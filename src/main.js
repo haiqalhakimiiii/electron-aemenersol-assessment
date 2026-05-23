@@ -76,13 +76,16 @@ ipcMain.handle('login', async (event, credentials) => {
       throw new Error(`Login failed: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    // API returns the token as a plain string, not an object
+    const token = await response.text();
     
-    if (data.accessToken) {
-      accessToken = data.accessToken; // Store token securely in main process
-      console.log('Token stored successfully');
+    console.log('Response type:', typeof token, 'Content:', token ? token.substring(0, 50) : 'empty');
+    
+    if (token && token.trim()) {
+      accessToken = token.trim(); // Store token securely in main process
+      console.log('Token stored successfully, length:', accessToken.length);
     } else {
-      throw new Error('No access token in response');
+      throw new Error('Empty token received from API');
     }
 
     return {
@@ -101,7 +104,7 @@ ipcMain.handle('login', async (event, credentials) => {
 // Handle API calls with token
 ipcMain.handle('fetch-api', async (event) => {
   try {
-    console.log('Fetching API with token:', accessToken ? 'Token present' : 'No token');
+    console.log('Fetching API with token:', accessToken ? `Token present (length: ${accessToken.length})` : 'No token');
     
     if (!accessToken) {
       throw new Error('No access token available. Please login first.');
