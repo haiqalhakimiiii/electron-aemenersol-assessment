@@ -28,6 +28,32 @@
 
 import './index.css';
 
-console.log(
-  '👋 This message is being logged by "renderer.js", included via Vite',
-);
+const loginForm = document.getElementById('login-form');
+
+// ===== LOGIN PAGE LOGIC =====
+if (loginForm) {
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      // Call main process to handle login
+      const result = await window.electronAPI.login({
+        email,
+        password,
+      });
+
+      if (result.success) {
+        // Navigate to dashboard
+        console.log('Login successful, navigating to dashboard...');
+        // window.location.href = 'dashboard.html';
+      } else {
+        console.error(result.error || 'Login failed');
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+}
