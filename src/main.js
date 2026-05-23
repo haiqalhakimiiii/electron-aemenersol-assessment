@@ -5,6 +5,30 @@ const fetch = require('node-fetch');
 
 let accessToken = null;
 
+function normalizeAccessToken(rawToken) {
+  if (typeof rawToken !== 'string') {
+    return null;
+  }
+
+  let token = rawToken.trim();
+
+  // Some APIs return a JSON-encoded string token (e.g. "abc...")
+  try {
+    const parsed = JSON.parse(token);
+    if (typeof parsed === 'string') {
+      token = parsed.trim();
+    }
+  } catch (error) {
+    // Keep the original token string when the response body is not JSON.
+  }
+
+  // Remove accidental surrounding quotes and duplicated Bearer prefix.
+  token = token.replace(/^"|"$/g, '').trim();
+  token = token.replace(/^Bearer\s+/i, '').trim();
+
+  return token || null;
+}
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
@@ -76,10 +100,10 @@ ipcMain.handle('login', async (event, credentials) => {
       throw new Error(`Login failed: ${response.statusText}`);
     }
 
-    // API returns the token as a plain string, not an object
-    const token = await response.text();
+    const rawToken = await response.text();
+    const token = normalizeAccessToken(rawToken);
     
-    console.log('Response type:', typeof token, 'Content:', token ? token.substring(0, 50) : 'empty');
+    console.log('Response type:', typeof rawToken, 'Content:', rawToken ? rawToken.substring(0, 50) : 'empty');
     
     if (token) {
       accessToken = token; // Store token securely in main process
