@@ -97,7 +97,14 @@ ipcMain.handle('login', async (event, credentials) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Login failed: ${response.statusText}`);
+      if ([400, 401, 403].includes(response.status)) {
+        return {
+          success: false,
+          error: 'Invalid username or password.',
+        };
+      }
+
+      throw new Error('Unable to login right now. Please try again.');
     }
 
     const rawToken = await response.text();
