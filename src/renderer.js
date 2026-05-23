@@ -35,15 +35,15 @@ if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
     try {
       // Call main process to handle login
-      const result = await window.electronAPI.login({
-        email,
+      const result = await window.electronAPI.login(
+        username,
         password,
-      });
+      );
 
       if (result.success) {
         // Navigate to dashboard
